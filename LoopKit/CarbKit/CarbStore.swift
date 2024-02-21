@@ -21,6 +21,7 @@ public enum CarbAbsorptionModel {
     case linear
     case nonlinear
     case adaptiveRateNonlinear
+    case dataDriven
 }
 
 public protocol CarbStoreDelegate: AnyObject {
@@ -238,6 +239,8 @@ public final class CarbStore {
             self.settings = CarbModelSettings(absorptionModel: PiecewiseLinearAbsorption(), initialAbsorptionTimeOverrun: absorptionTimeOverrun, adaptiveAbsorptionRateEnabled: false)
         case .adaptiveRateNonlinear:
             self.settings = CarbModelSettings(absorptionModel: PiecewiseLinearAbsorption(), initialAbsorptionTimeOverrun: 1.0, adaptiveAbsorptionRateEnabled: true, adaptiveRateStandbyIntervalFraction: 0.2)
+        case .dataDriven:
+            self.settings = CarbModelSettings(absorptionModel: DataDrivenAbsorption(), initialAbsorptionTimeOverrun: absorptionTimeOverrun, adaptiveAbsorptionRateEnabled: false)
         }
 
         cacheStore.onReady { (error) in
@@ -1462,6 +1465,8 @@ extension CarbStore {
                 carbAbsorptionModel = "Nonlinear"
             case .adaptiveRateNonlinear:
                 carbAbsorptionModel = "Nonlinear with Adaptive Rate for Remaining Carbs"
+            case .dataDriven:
+                carbAbsorptionModel = "Uses data from past examples of this event to estimate carb absorption"
             }
 
             var report: [String] = [

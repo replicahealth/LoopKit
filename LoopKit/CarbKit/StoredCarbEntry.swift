@@ -10,6 +10,7 @@ import HealthKit
 import CoreData
 
 public struct StoredCarbEntry: CarbEntry, Equatable {
+    public var historicalAbsorptionData: [Int : Double]?
 
     public let uuid: UUID?
 
