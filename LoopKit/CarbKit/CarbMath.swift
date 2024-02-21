@@ -96,7 +96,6 @@ extension CarbAbsorptionComputable {
         let percentTime = percentTimeAtPercentAbsorption(percentAbsorption)
         return percentTime * totalAbsorptionTime
     }
-    
 }
 
 
@@ -176,11 +175,49 @@ struct LinearAbsorption: CarbAbsorptionComputable {
     }
 }
 
+struct DataDrivenAbsorption: CarbAbsorptionComputable {
+    var timingData: [Int: Double] = [:]
+    let maxObservationMins = 60 * 5
+    var total: Double = 1.0
+    func percentAbsorptionAtPercentTime(_ percentTime: Double) -> Double {
+        var absorption = 0.0
+        for (k, v) in timingData{
+            if 0 <= k && maxObservationMins > k{
+                absorption += v
+            }
+        }
+        return absorption / total
+    }
+    
+    func percentTimeAtPercentAbsorption(_ percentAbsorption: Double) -> Double {
+        var t = 0
+        var absorption = 0.0
+        while t < maxObservationMins{
+            if percentAbsorption <= absorption{
+                break
+            }
+            absorption += timingData[t] ?? 0.0
+            t += 5
+        }
+        return Double(t) / Double(maxObservationMins)
+    }
+    
+    func percentRateAtPercentTime(_ percentTime: Double) -> Double {
+        let t = round((percentTime * Double(maxObservationMins)) / 5) * 5
+        let absorption = timingData[Int(t)] ?? 0
+        return absorption
+    }
+}
+
+
 // MARK: - Piecewise linear absorption as a factor of reported duration
 /// Nonlinear  carb absorption model where absorption rate increases linearly from zero to a maximum value at a fraction of absorption time equal to percentEndOfRise, then remains constant until a fraction of absorption time equal to percentStartOfFall, and then decreases linearly to zero at the end of absorption time
 /// - Parameters:
 ///   - percentEndOfRise: the percentage of absorption time when absorption rate reaches maximum, must be strictly between 0 and 1
 ///   - percentStartOfFall: the percentage of absorption time when absorption rate starts to decay, must be stritctly between 0 and 1 and  greater than percentEndOfRise
+///
+///
+
 struct PiecewiseLinearAbsorption: CarbAbsorptionComputable {
     
     let percentEndOfRise = 0.15
@@ -235,8 +272,7 @@ struct PiecewiseLinearAbsorption: CarbAbsorptionComputable {
     }
 }
 
-extension CarbEntry {
-    
+extension CarbEntry {    
     func carbsOnBoard(at date: Date, defaultAbsorptionTime: TimeInterval, delay: TimeInterval, absorptionModel: CarbAbsorptionComputable) -> Double {
         let time = date.timeIntervalSince(startDate)
         let value: Double

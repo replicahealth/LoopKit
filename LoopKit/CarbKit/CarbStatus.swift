@@ -34,6 +34,10 @@ extension CarbStatus: SampleValue {
 
 
 extension CarbStatus: CarbEntry {
+    public var historicalAbsorptionData: [Int : Double]? {
+        return nil
+    }
+    
     public var absorptionTime: TimeInterval? {
         return absorption?.estimatedDate.duration ?? entry.absorptionTime
     }
