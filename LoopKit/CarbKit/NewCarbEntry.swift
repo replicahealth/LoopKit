@@ -20,7 +20,7 @@ public struct NewCarbEntry: CarbEntry, Equatable, RawRepresentable {
     public let absorptionTime: TimeInterval?
     public var historicalAbsorptionData: [Int : Double]?
 
-    public init(date: Date = Date(), quantity: HKQuantity, startDate: Date, foodType: String?, absorptionTime: TimeInterval?, absorptionData: [Int: Double]?) {
+    public init(date: Date = Date(), quantity: HKQuantity, startDate: Date, foodType: String?, absorptionTime: TimeInterval?, absorptionData: [Int: Double]? = nil) {
         self.date = date
         self.quantity = quantity
         self.startDate = startDate

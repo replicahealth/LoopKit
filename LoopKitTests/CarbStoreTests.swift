@@ -858,8 +858,9 @@ class CarbStorePersistenceTests: PersistenceControllerTestCase, CarbStoreDelegat
     }
 
     func testSetSyncCarbObjects() {
-        let carbEntry = NewCarbEntry(quantity: HKQuantity(unit: .gram(), doubleValue: 10), startDate: Date(timeIntervalSinceNow: -1), foodType: "First", absorptionTime: .hours(5))
+        let carbEntry = NewCarbEntry(quantity: HKQuantity(unit: .gram(), doubleValue: 10), startDate: Date(timeIntervalSinceNow: -1), foodType: "First", absorptionTime: .hours(5), absorptionData: nil)
         let syncCarbObjects = [SyncCarbObject(absorptionTime: .hours(5),
+                                              absorptionData: nil,
                                               createdByCurrentApp: true,
                                               foodType: "Pizza",
                                               grams: 45,
@@ -875,6 +876,7 @@ class CarbStorePersistenceTests: PersistenceControllerTestCase, CarbStoreDelegat
                                               addedDate: Date(timeIntervalSinceNow: -34),
                                               supercededDate: nil),
                                SyncCarbObject(absorptionTime: .hours(3),
+                                              absorptionData: nil,
                                               createdByCurrentApp: false,
                                               foodType: "Pasta",
                                               grams: 25,
@@ -890,6 +892,7 @@ class CarbStorePersistenceTests: PersistenceControllerTestCase, CarbStoreDelegat
                                               addedDate: Date(timeIntervalSinceNow: -16),
                                               supercededDate: nil),
                                SyncCarbObject(absorptionTime: .minutes(30),
+                                              absorptionData: nil,
                                               createdByCurrentApp: true,
                                               foodType: "Sugar",
                                               grams: 15,

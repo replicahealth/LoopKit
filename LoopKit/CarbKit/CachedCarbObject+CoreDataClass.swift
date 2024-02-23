@@ -23,6 +23,19 @@ class CachedCarbObject: NSManagedObject {
             primitiveAbsorptionTime = newValue != nil ? NSNumber(value: newValue!) : nil
         }
     }
+    
+    var absorptionData: [Int: Double]? {
+        get {
+            willAccessValue(forKey: "absorptionTime")
+            defer { didAccessValue(forKey: "absorptionTime") }
+            return primitiveAbsorptionData
+        }
+        set {
+            willChangeValue(forKey: "absorptionTime")
+            defer { didChangeValue(forKey: "absorptionTime") }
+            primitiveAbsorptionData = newValue
+        }
+    }
 
     var syncVersion: Int? {
         get {
@@ -226,7 +239,7 @@ extension CachedCarbObject {
 
         metadata[MetadataKeyUserCreatedDate] = userCreatedDate
         metadata[MetadataKeyUserUpdatedDate] = userUpdatedDate
-
+        
         return HKQuantitySample(
             type: HKObjectType.quantityType(forIdentifier: .dietaryCarbohydrates)!,
             quantity: quantity,

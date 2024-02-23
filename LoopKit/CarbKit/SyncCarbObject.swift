@@ -17,6 +17,7 @@ public enum Operation: Int, CaseIterable, Codable {
 
 public struct SyncCarbObject: Codable, Equatable {
     public let absorptionTime: TimeInterval?
+    public let absorptionData: [Int: Double]?
     public let createdByCurrentApp: Bool
     public let foodType: String?
     public let grams: Double
@@ -33,6 +34,7 @@ public struct SyncCarbObject: Codable, Equatable {
     public let supercededDate: Date?
 
     public init(absorptionTime: TimeInterval?,
+                absorptionData: [Int: Double]? = nil,
                 createdByCurrentApp: Bool,
                 foodType: String?,
                 grams: Double,
@@ -48,6 +50,7 @@ public struct SyncCarbObject: Codable, Equatable {
                 addedDate: Date?,
                 supercededDate: Date?) {
         self.absorptionTime = absorptionTime
+        self.absorptionData = absorptionData
         self.createdByCurrentApp = createdByCurrentApp
         self.foodType = foodType
         self.grams = grams
@@ -70,6 +73,7 @@ public struct SyncCarbObject: Codable, Equatable {
 extension SyncCarbObject {
     init(managedObject: CachedCarbObject) {
         self.init(absorptionTime: managedObject.absorptionTime,
+                  absorptionData: managedObject.absorptionData,
                   createdByCurrentApp: managedObject.createdByCurrentApp,
                   foodType: managedObject.foodType,
                   grams: managedObject.grams,
